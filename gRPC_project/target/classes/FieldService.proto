@@ -1,0 +1,48 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package field;
+option java_multiple_files = true;
+option java_package = "grpc.fieldservice";
+
+message FieldResponse {
+    repeated string cells = 1;
+    repeated string hlines = 2;
+    repeated string vlines = 3;
+    repeated int32 score = 4;
+    int32 rows = 5;
+    int32 cols = 6;
+    int32 whoMove = 7;
+}
+
+message ClientIdResponse {
+    int32 clientId = 1;
+}
+
+message AddNewCommandRequest {
+    int32 playerIndex = 1;
+    string commandName = 2;
+    int32 iIndex = 3;
+    int32 jIndex = 4;
+    int32 status = 5;
+}
+
+message NeedToRepaintRequest {
+    int32 clientId = 1;
+}
+
+message NeedToRepaintResponse {
+    bool ntr = 1;
+}
+
+message SetNtrRequest {
+    int32 clientId = 1;
+    bool ntr = 2;
+}
+
+service FieldService {
+    rpc getField(google.protobuf.Empty) returns (FieldResponse);
+    rpc getClientId(google.protobuf.Empty) returns (ClientIdResponse);
+    rpc executeCommand(AddNewCommandRequest) returns (FieldResponse);
+    rpc needToRepaint(NeedToRepaintRequest) returns (NeedToRepaintResponse);
+    rpc setNtr(SetNtrRequest) returns (google.protobuf.Empty);
+}
